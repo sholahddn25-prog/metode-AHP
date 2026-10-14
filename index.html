@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sistem Pendukung Keputusan berbasis metode Analytic Hierarchy Process (AHP) - perhitungan bobot, uji konsistensi CI/CR, dan ranking alternatif.">
+  <title>AutoAHP · Intelligence System</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+  <div class="aurora neural-field" aria-hidden="true"></div>
+
+  <div class="app-shell">
+    <aside class="workspace-rail intelligence-rail" aria-label="Navigasi AHP Auto Intelligence System">
+      <div class="brand">
+        <span class="brand-badge"><i class="fa-solid fa-atom"></i></span>
+        <span class="brand-text"><strong>AutoAHP</strong><small>Multi-Criteria Intelligence</small></span>
+      </div>
+
+      <div class="rail-intro model-status">
+        <span class="rail-eyebrow"><i class="fa-solid fa-circle"></i> SYSTEM ONLINE</span>
+        <p>Decision model</p>
+        <strong>Analytic Hierarchy<br>Process</strong>
+        <small>Eigenvector · Saaty scale · audit-ready</small>
+      </div>
+
+      <nav class="stepper intelligence-nav" id="stepper" aria-label="Modul analisis">
+        <ol class="stepper-list">
+          <li class="stepper-item is-active" data-step="1"><button type="button" class="stepper-btn"><span class="stepper-dot"><i class="fa-solid fa-grid-2"></i></span><span class="stepper-label">Decision Dashboard<small>Model & alternatives</small></span></button></li>
+          <li class="stepper-item" data-step="2"><button type="button" class="stepper-btn"><span class="stepper-dot"><i class="fa-solid fa-sliders"></i></span><span class="stepper-label">Criteria Matrix<small>Priority weighting</small></span></button></li>
+          <li class="stepper-item" data-step="3"><button type="button" class="stepper-btn"><span class="stepper-dot"><i class="fa-solid fa-code-compare"></i></span><span class="stepper-label">Alternative Lab<small>Local evaluations</small></span></button></li>
+          <li class="stepper-item" data-step="4"><button type="button" class="stepper-btn"><span class="stepper-dot"><i class="fa-solid fa-chart-line"></i></span><span class="stepper-label">Intelligence Report<small>Ranking & evidence</small></span></button></li>
+        </ol>
+      </nav>
+
+      <div class="rail-proof intelligence-proof">
+        <span class="rail-proof-mark"><i class="fa-solid fa-shield-halved"></i></span>
+        <div><strong>Integrity shield</strong><small>Auto reciprocal · CR guardrail</small></div>
+      </div>
+    </aside>
+
+    <section class="workspace-main">
+      <header class="topbar intelligence-topbar">
+        <div class="topbar-context"><span class="topbar-kicker">AHP AUTO INTELLIGENCE SYSTEM</span><strong id="workspaceStep">01 — Decision Dashboard</strong></div>
+        <div class="topbar-actions">
+          <span class="engine-chip engine-online"><i class="fa-solid fa-circle"></i> Calculation core online</span>
+          <button id="themeToggle" class="icon-btn" type="button" aria-label="Ganti tema gelap/terang" title="Ganti tema"><i class="fa-solid fa-moon"></i></button>
+        </div>
+      </header>
+
+      <div class="progress" id="progress" role="progressbar" aria-label="Kemajuan wizard" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1"><div class="progress-fill" id="progressFill"></div></div>
+
+      <main class="container">
+
+    <!-- ══════════════════ STEP 1 ══════════════════ -->
+    <section class="step-panel is-active" id="step-1" data-step="1" aria-labelledby="step1Title">
+      <section class="decision-hero intelligence-hero fade-slide" aria-label="Dashboard intelijen keputusan">
+        <div class="decision-hero-copy intelligence-copy">
+          <span class="panel-kicker"><i class="fa-solid fa-wave-square"></i> DECISION INTELLIGENCE / V1.0</span>
+          <h1>Make every<br><span>decision</span> count.</h1>
+          <p>Bangun model keputusan yang objektif, bandingkan setiap prioritas, dan keluarkan rekomendasi yang dapat dipertanggungjawabkan.</p>
+          <div class="hero-signals" aria-label="Status sistem">
+            <span><i class="fa-solid fa-bolt"></i> Real-time calculation</span>
+            <span><i class="fa-solid fa-fingerprint"></i> Verified audit trail</span>
+          </div>
+        </div>
+        <div class="intelligence-core" aria-label="Visualisasi inti sistem">
+          <div class="core-orbit orbit-one"></div>
+          <div class="core-orbit orbit-two"></div>
+          <div class="core-center"><i class="fa-solid fa-brain"></i><strong>AHP</strong><small>INTELLIGENCE</small></div>
+          <span class="data-node node-one"><i class="fa-solid fa-list-check"></i> Criteria</span>
+          <span class="data-node node-two"><i class="fa-solid fa-shuffle"></i> Alternatives</span>
+          <span class="data-node node-three"><i class="fa-solid fa-chart-simple"></i> Ranking</span>
+        </div>
+        <div class="engine-proof intelligence-proof-card">
+          <span class="engine-proof-icon"><i class="fa-solid fa-microchip"></i></span>
+          <div><strong>Compute with confidence</strong><small>Principal eigenvector · Saaty consistency ratio · transparent evidence</small></div>
+        </div>
+      </section>
+
+      <section class="decision-brief mission-console glass fade-slide" aria-labelledby="goalLabel">
+        <div class="decision-brief-main">
+          <label id="goalLabel" for="goalInput"><i class="fa-solid fa-crosshairs"></i> ANALYSIS MISSION</label>
+          <input id="goalInput" class="goal-input" type="text" maxlength="160" value="Menentukan alternatif terbaik" placeholder="Contoh: Memilih pemasok terbaik untuk 2026">
+          <p>Nyatakan tujuan keputusan agar setiap rekomendasi dan jejak audit mudah ditelusuri.</p>
+        </div>
+        <div class="trust-points mission-stats" aria-label="Jaminan perhitungan">
+          <span><i class="fa-solid fa-server"></i> Python core</span>
+          <span><i class="fa-solid fa-arrows-rotate"></i> Reciprocal sync</span>
+          <span><i class="fa-solid fa-shield-heart"></i> Consistency guard</span>
+        </div>
+      </section>
+
+      <div class="panel-head fade-slide">
+        <span class="panel-kicker">MODULE 01 / MODEL SETUP</span>
+        <h2 id="step1Title">Configure your decision model</h2>
+        <p>Tentukan kriteria yang membentuk prioritas dan alternatif yang akan diuji. Mulai lebih cepat dengan template studi kasus di bawah ini.</p>
+      </div>
+
+      <div class="card glass preset-card fade-slide">
+        <div class="card-head">
+          <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Decision Templates</h3>
+          <div class="preset-actions">
+            <label class="sr-only" for="presetSelect">Pilih preset</label>
+            <select id="presetSelect" class="select"></select>
+            <button type="button" id="btnLoadPreset" class="btn btn-soft"><i class="fa-solid fa-download"></i> Load Preset</button>
+            <button type="button" id="btnQuickMobil" class="btn btn-accent"><i class="fa-solid fa-car"></i> Quick Load Preset: Soal Pemilihan Mobil</button>
+          </div>
+        </div>
+        <p class="preset-desc" id="presetDesc">Belum ada preset dimuat. Muat preset untuk mengisi seluruh data perbandingan secara otomatis.</p>
+      </div>
+
+      <div class="grid-2">
+        <!-- Criteria editor -->
+        <div class="card glass fade-slide">
+          <div class="card-head">
+            <h3><i class="fa-solid fa-list-check"></i> Kriteria</h3>
+            <span class="count-badge" id="criteriaCount">0 / 10</span>
+          </div>
+          <p class="card-hint">Minimal 3, maksimal 10 kriteria. Nama tidak boleh kosong atau duplikat.</p>
+          <ul class="name-list" id="criteriaList"></ul>
+          <button type="button" class="btn btn-soft btn-block" id="btnAddCriteria">
+            <i class="fa-solid fa-plus"></i> Tambah Kriteria
+          </button>
+          <p class="field-error" id="criteriaError" role="alert"></p>
+        </div>
+
+        <!-- Alternatives editor -->
+        <div class="card glass fade-slide">
+          <div class="card-head">
+            <h3><i class="fa-solid fa-shuffle"></i> Alternatif</h3>
+            <span class="count-badge" id="altCount">0 / 10</span>
+          </div>
+          <p class="card-hint">Minimal 2, maksimal 10 alternatif. Nama tidak boleh kosong atau duplikat.</p>
+          <ul class="name-list" id="altList"></ul>
+          <button type="button" class="btn btn-soft btn-block" id="btnAddAlt">
+            <i class="fa-solid fa-plus"></i> Tambah Alternatif
+          </button>
+          <p class="field-error" id="altError" role="alert"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ STEP 2 ══════════════════ -->
+    <section class="step-panel" id="step-2" data-step="2" aria-labelledby="step2Title" hidden>
+      <div class="panel-head fade-slide">
+        <span class="panel-kicker">Langkah 2 dari 4</span>
+        <h2 id="step2Title">Matriks Perbandingan Kriteria</h2>
+        <p>Bandingkan setiap pasangan kriteria dengan skala Saaty 1–9. Ubah sel di atas diagonal, maka sel kebalikannya (<em>j, i</em>) otomatis terisi <strong>1/x</strong> seketika.</p>
+      </div>
+
+      <div class="card glass fade-slide">
+        <div class="card-head">
+          <h3><i class="fa-solid fa-table-cells"></i> Matriks Kriteria (n × n)</h3>
+          <span class="chip chip-soft"><i class="fa-solid fa-arrows-rotate"></i> Auto-Reciprocal Realtime</span>
+        </div>
+        <div class="table-scroll" id="criteriaMatrixHost"></div>
+      </div>
+
+      <aside class="matrix-safety glass fade-slide">
+        <i class="fa-solid fa-circle-check"></i>
+        <div><strong>Guardrail aktif</strong><span>Diagonal dikunci pada 1 dan setiap perubahan langsung memperbarui pasangan resiprokalnya. Backend memvalidasi ulang sebelum menghitung.</span></div>
+      </aside>
+
+      <details class="card glass legend fade-slide" open>
+        <summary><i class="fa-solid fa-circle-info"></i> Skala Perbandingan Berpasangan Saaty (1–9)</summary>
+        <div class="table-scroll">
+          <table class="table table-legend">
+            <thead>
+              <tr><th>Nilai</th><th>Makna</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="val-pill">1</span></td><td>Elemen A sama penting dengan elemen B</td></tr>
+              <tr><td><span class="val-pill">2</span></td><td>Nilai antara / kompromi</td></tr>
+              <tr><td><span class="val-pill">3</span></td><td>Sedikit lebih penting</td></tr>
+              <tr><td><span class="val-pill">4</span></td><td>Nilai antara / kompromi</td></tr>
+              <tr><td><span class="val-pill">5</span></td><td>Lebih penting</td></tr>
+              <tr><td><span class="val-pill">6</span></td><td>Nilai antara / kompromi</td></tr>
+              <tr><td><span class="val-pill">7</span></td><td>Sangat penting</td></tr>
+              <tr><td><span class="val-pill">8</span></td><td>Nilai antara / kompromi</td></tr>
+              <tr><td><span class="val-pill">9</span></td><td>Mutlak sangat penting</td></tr>
+              <tr><td><span class="val-pill">1/x</span></td><td>Resiprokal — jika A : B = x maka B : A = 1/x</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- ══════════════════ STEP 3 ══════════════════ -->
+    <section class="step-panel" id="step-3" data-step="3" aria-labelledby="step3Title" hidden>
+      <div class="panel-head fade-slide">
+        <span class="panel-kicker">Langkah 3 dari 4</span>
+        <h2 id="step3Title">Matriks Perbandingan Alternatif per Kriteria</h2>
+        <p>Pilih kriteria melalui tab di bawah, lalu bandingkan seluruh pasangan alternatif pada kriteria tersebut.</p>
+      </div>
+
+      <div class="tabs" id="altTabs" role="tablist" aria-label="Daftar kriteria"></div>
+
+      <div class="card glass fade-slide">
+        <div class="card-head">
+          <h3 id="altMatrixTitle"><i class="fa-solid fa-table-list"></i> Matriks Alternatif</h3>
+          <span class="chip chip-soft"><i class="fa-solid fa-arrows-rotate"></i> Auto-Reciprocal Realtime</span>
+        </div>
+        <div class="table-scroll" id="altMatrixHost"></div>
+      </div>
+
+      <div class="inline-note glass">
+        <i class="fa-solid fa-lightbulb"></i>
+        <span>Semua sel diagonal bernilai <strong>1.000</strong>. Nilai di bawah diagonal selalu mengikuti resiprokal sel di atas diagonal.</span>
+      </div>
+
+      <div class="completion-strip glass" id="comparisonProgress" role="status" aria-live="polite"></div>
+    </section>
+
+    <!-- ══════════════════ STEP 4 ══════════════════ -->
+    <section class="step-panel" id="step-4" data-step="4" aria-labelledby="step4Title" hidden>
+      <div class="panel-head fade-slide">
+        <span class="panel-kicker">Langkah 4 dari 4</span>
+        <h2 id="step4Title">Keputusan, bukti, dan jejak audit</h2>
+        <p>Prioritas dihitung oleh engine Python dengan principal eigenvector; setiap hasil dilengkapi matriks awal, normalisasi, λ<sub>max</sub>, CI, CR, dan bukti numerik.</p>
+        <div class="panel-actions">
+          <button type="button" class="btn btn-soft" id="btnCopySummary"><i class="fa-regular fa-copy"></i> Salin Ringkasan</button>
+          <button type="button" class="btn btn-soft" id="btnExport"><i class="fa-solid fa-file-csv"></i> Export to CSV/Excel</button>
+          <button type="button" class="btn btn-soft" id="btnPrint"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
+          <button type="button" class="btn btn-accent" id="btnRecalc"><i class="fa-solid fa-rotate-right"></i> Hitung Ulang</button>
+        </div>
+      </div>
+
+      <div id="decisionVerdict" class="decision-verdict" role="status" aria-live="polite"></div>
+      <div id="resultAlerts" class="alert-stack" role="status" aria-live="polite"></div>
+
+      <div class="grid-4" id="summaryCards"></div>
+
+      <div class="grid-2">
+        <div class="card glass fade-slide">
+          <div class="card-head"><h3><i class="fa-solid fa-chart-column"></i> Peringkat Skor Akhir</h3></div>
+          <div class="chart-box"><canvas id="rankChart" aria-label="Diagram batang skor akhir alternatif" role="img"></canvas></div>
+        </div>
+        <div class="card glass fade-slide">
+          <div class="card-head"><h3><i class="fa-solid fa-chart-pie"></i> Sebaran Bobot Kriteria</h3></div>
+          <div class="chart-box"><canvas id="criteriaChart" aria-label="Diagram donat bobot kriteria" role="img"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card glass fade-slide" id="leaderboardHost"></div>
+      <div class="card glass fade-slide" id="synthesisHost"></div>
+      <div id="auditHost" class="audit-stack"></div>
+    </section>
+      </main>
+
+      <footer class="wizard-nav">
+    <button type="button" class="btn btn-ghost" id="btnPrev" disabled>
+      <i class="fa-solid fa-arrow-left"></i> Kembali
+    </button>
+    <span class="wizard-meta" id="wizardMeta">Langkah 1 dari 4</span>
+    <button type="button" class="btn btn-primary" id="btnNext">
+      Lanjut <i class="fa-solid fa-arrow-right"></i>
+    </button>
+      </footer>
+    </section>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="static/js/presets.js"></script>
+  <script src="static/js/ahp_static_engine.js"></script>
+  <script src="static/js/ahp_calc.js"></script>
+</body>
+</html>
